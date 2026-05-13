@@ -3,203 +3,338 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Roky's Marketplace</title>
+  <title>YouTube MP3 & MP4 Downloader</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: #0e0e18; min-height: 100vh; overflow-x: hidden; }
-    canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-    .rm-content { position: relative; z-index: 1; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-    /* Hero */
-    .rm-hero { text-align: center; padding: 48px 24px 32px; }
-    .rm-logo { font-size: 52px; font-weight: 900; color: #ff69b4; -webkit-text-stroke: 3px #111; letter-spacing: -1px; line-height: 1; }
-    .rm-tagline { color: #aaa; font-size: 15px; margin-top: 8px; letter-spacing: 1px; text-transform: uppercase; }
-    .rm-discord-badge { display: inline-flex; align-items: center; gap: 8px; background: #5865F2; color: white; border-radius: 999px; padding: 8px 18px; font-size: 13px; font-weight: 500; margin-top: 14px; }
-    .rm-online { display: inline-block; width: 10px; height: 10px; background: #23d18b; border-radius: 50%; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
 
-    /* Stats */
-    .rm-stats { display: flex; justify-content: center; gap: 32px; padding: 16px 24px 32px; flex-wrap: wrap; }
-    .rm-stat { text-align: center; }
-    .rm-stat-num { font-size: 28px; font-weight: 700; color: #ff69b4; }
-    .rm-stat-label { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+      max-width: 500px;
+      width: 100%;
+    }
 
-    /* Categories */
-    .rm-section-title { text-align: center; font-size: 13px; font-weight: 500; color: #666; text-transform: uppercase; letter-spacing: 2px; margin: 0 0 20px; }
-    .rm-categories { display: flex; gap: 10px; padding: 0 24px 32px; justify-content: center; flex-wrap: wrap; }
-    .rm-cat { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 999px; padding: 8px 18px; color: #ccc; font-size: 13px; cursor: pointer; transition: all 0.2s; }
-    .rm-cat:hover, .rm-cat.active { background: #ff69b4; color: #111; border-color: #ff69b4; font-weight: 500; }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
 
-    /* Sellers */
-    .rm-sellers { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; padding: 0 24px 40px; }
+    .header h1 {
+      color: #333;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
 
-    /* Team Slider */
-    .team-slider { overflow: hidden; padding: 24px 0; }
-    .team-slider-track { display: flex; gap: 16px; animation: slide 20s linear infinite; }
-    .team-member { background: #16162a; border: 1px solid #2a2a4a; border-radius: 14px; padding: 16px; flex: 0 0 200px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-    .team-avatar { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 20px; }
-    .team-name { font-size: 14px; font-weight: 600; color: #fff; }
-    .team-role { font-size: 12px; color: #aaa; }
+    .header p {
+      color: #666;
+      font-size: 14px;
+    }
 
-    @keyframes slide { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .icon {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
 
-    /* Footer */
-    .rm-divider { height: 1px; background: #1e1e35; margin: 0 24px 32px; }
-    .rm-footer { text-align: center; padding: 24px; border-top: 1px solid #1e1e35; }
-    .rm-footer-logo { font-size: 22px; font-weight: 900; color: #ff69b4; -webkit-text-stroke: 1.5px #111; }
-    .rm-footer-text { font-size: 12px; color: #444; margin-top: 6px; }
+    .form-group {
+      margin-bottom: 20px;
+    }
 
-    /* Join button */
-    .rm-join-btn { display: flex; align-items: center; gap: 8px; background: #5865F2; color: white; border-radius: 10px; padding: 12px 28px; font-size: 14px; font-weight: 600; margin: 0 auto 32px; border: none; cursor: pointer; transition: background 0.2s; }
-    .rm-join-btn:hover { background: #4752c4; }
+    label {
+      display: block;
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    input[type="url"],
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+
+    input[type="url"]:focus,
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .format-selector {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .format-btn {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      background: white;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+      font-size: 14px;
+    }
+
+    .format-btn:hover {
+      border-color: #667eea;
+    }
+
+    .format-btn.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-color: transparent;
+    }
+
+    .download-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .download-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .download-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-right: 8px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .message {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      display: none;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .message.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      display: block;
+    }
+
+    .message.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      display: block;
+    }
+
+    .download-link {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #28a745;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    .download-link:hover {
+      background: #218838;
+    }
+
+    .info {
+      background: #f0f4ff;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #666;
+      border-left: 4px solid #667eea;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 25px;
+      }
+
+      .header h1 {
+        font-size: 24px;
+      }
+
+      .format-selector {
+        flex-direction: column;
+      }
+    }
   </style>
 </head>
 <body>
-
-<canvas id="starCanvas"></canvas>
-<div class="rm-content">
-
-  <div class="rm-hero">
-    <div class="rm-logo">Roky's Marketplace</div>
-    <div class="rm-tagline">The ultimate Discord trading hub</div>
-    <div class="rm-discord-badge">
-      <span class="rm-online"></span>
-      70 members online
+  <div class="container">
+    <div class="header">
+      <div class="icon">🎥</div>
+      <h1>YouTube Downloader</h1>
+      <p>Download videos as MP3 or MP4</p>
     </div>
+
+    <div class="info">
+      💡 Paste a YouTube URL and choose your format. Downloads are fast and easy!
+    </div>
+
+    <form id="downloadForm">
+      <div class="form-group">
+        <label for="url">YouTube URL</label>
+        <input 
+          type="url" 
+          id="url" 
+          placeholder="https://www.youtube.com/watch?v=..." 
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Format</label>
+        <div class="format-selector">
+          <button 
+            type="button" 
+            class="format-btn active" 
+            data-format="mp3"
+            onclick="selectFormat('mp3', this)"
+          >
+            🎵 MP3
+          </button>
+          <button 
+            type="button" 
+            class="format-btn" 
+            data-format="mp4"
+            onclick="selectFormat('mp4', this)"
+          >
+            🎬 MP4
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" class="download-btn" id="downloadBtn">
+        Download
+      </button>
+    </form>
+
+    <div class="message" id="message"></div>
   </div>
 
-  <div class="rm-stats">
-    <div class="rm-stat"><div class="rm-stat-num">284</div><div class="rm-stat-label">Members</div></div>
-    <div class="rm-stat"><div class="rm-stat-num">283</div><div class="rm-stat-label">Listings</div></div>
-    <div class="rm-stat"><div class="rm-stat-num">100%</div><div class="rm-stat-label">Trusted</div></div>
-    <div class="rm-stat"><div class="rm-stat-num">£50k+</div><div class="rm-stat-label">Traded</div></div>
-  </div>
+  <script>
+    let selectedFormat = 'mp3';
 
-  <button class="rm-join-btn">
-    Join Roky's Server
-  </button>
-
-  <div class="rm-section-title">Browse categories</div>
-  <div class="rm-categories">
-    <div class="rm-cat active">All</div>
-    <div class="rm-cat">Game Accounts</div>
-    <div class="rm-cat">Discord Nitro</div>
-    <div class="rm-cat">Gift Cards</div>
-    <div class="rm-cat">Services</div>
-    <div class="rm-cat">Digital Items</div>
-  </div>
-
-  <div class="rm-divider"></div>
-
-  <div class="rm-section-title">Meet the Team</div>
-  <div class="team-slider">
-    <div class="team-slider-track">
-      <div class="team-member">
-        <div class="team-avatar" style="background:#ff69b4; color:#111;">RK</div>
-        <div class="team-name">Roky</div>
-        <div class="team-role">Founder</div>
-      </div>
-      <div class="team-member">
-        <div class="team-avatar" style="background:#5865F2; color:#fff;">ZX</div>
-        <div class="team-name">max</div>
-        <div class="team-role">adminr</div>
-      </div>
-      <div class="team-member">
-        <div class="team-avatar" style="background:#23d18b; color:#111;">NV</div>
-        <div class="team-name">levi</div>
-        <div class="team-role">manager</div>
-      </div>
-      <div class="team-member">
-        <div class="team-avatar" style="background:#f59e0b; color:#111;">SK</div>
-        <div class="team-name">bombasi</div>
-        <div class="team-role">developer</div>
-      </div>
-      <!-- repeat members for continuous loop -->
-      <div class="team-member">
-        <div class="team-avatar" style="background:#ff69b4; color:#111;">RK</div>
-        <div class="team-name">Roky</div>
-        <div class="team-role">Founder</div>
-      </div>
-      <div class="team-member">
-        <div class="team-avatar" style="background:#5865F2; color:#fff;">ZX</div>
-        <div class="team-name">jake</div>
-        <div class="team-role">developer</div>
-      </div>
-       <div class="team-member">
-        <div class="team-avatar" style="background:#ff69b4; color:#111;">RK</div>
-        <div class="team-name">tazz </div>
-        <div class="team-role">moderator</div>
-      </div>   
-          <div class="team-member">
-        <div class="team-avatar" style="background:#ff69b4; color:#111;">RK</div>
-        <div class="team-name">batman </div>
-        <div class="team-role">trial mod</div>
-      </div>
-         <div class="team-member">
-        <div class="team-avatar" style="background:#ff69b4; color:#111;">RK</div>
-        <div class="team-name">kyle</div>
-        <div class="team-role">junior supporterr</div>
-      </div>
-  <div class="rm-footer">
-    <div class="rm-footer-logo">Roky's Marketplace</div>
-    <div class="rm-footer-text">Official Discord server • Trade safely • Always verify sellers</div>
-  </div>
-
-</div>
-
-<script>
-  // Moving stars background
-  const canvas = document.getElementById('starCanvas');
-  const ctx = canvas.getContext('2d');
-  let stars = [];
-
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-
-  function makeStars() {
-    stars = [];
-    for (let i = 0; i < 180; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        r: Math.random() * 1.5 + 0.3,
-        o: Math.random() * 0.6 + 0.2,
-        speed: Math.random() * 0.3 + 0.05
+    function selectFormat(format, element) {
+      selectedFormat = format;
+      document.querySelectorAll('.format-btn').forEach(btn => {
+        btn.classList.remove('active');
       });
+      element.classList.add('active');
     }
-  }
 
-  function drawStars() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    stars.forEach(s => {
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255,105,180,${s.o})`;
-      ctx.fill();
-      s.x += s.speed;
-      if (s.x > canvas.width) s.x = 0;
-      s.o += (Math.random() - 0.5) * 0.02;
-      s.o = Math.max(0.1, Math.min(0.8, s.o));
+    document.getElementById('downloadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const url = document.getElementById('url').value;
+      const messageEl = document.getElementById('message');
+      const btn = document.getElementById('downloadBtn');
+
+      if (!url) {
+        showMessage('Please enter a YouTube URL', 'error');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span>Downloading...';
+      messageEl.style.display = 'none';
+
+      try {
+        const response = await fetch('/api/download', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            url: url,
+            format: selectedFormat
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          showMessage(
+            `✅ Download complete!<br><a href="${data.downloadUrl}" download="${data.filename}" class="download-link">📥 Click to Download</a>`,
+            'success'
+          );
+          document.getElementById('url').value = '';
+        } else {
+          showMessage(`❌ Error: ${data.error}`, 'error');
+        }
+      } catch (error) {
+        showMessage(`❌ Connection error: ${error.message}`, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Download';
+      }
     });
-    requestAnimationFrame(drawStars);
-  }
 
-  resize();
-  makeStars();
-  drawStars();
-  window.addEventListener('resize', () => { resize(); makeStars(); });
-
-  // Category button logic
-  document.querySelectorAll('.rm-cat').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.rm-cat').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
-  });
-</script>
-
+    function showMessage(text, type) {
+      const messageEl = document.getElementById('message');
+      messageEl.innerHTML = text;
+      messageEl.className = `message ${type}`;
+    }
+  </script>
 </body>
 </html>
